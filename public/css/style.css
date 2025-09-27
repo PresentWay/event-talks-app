@@ -96,3 +96,9 @@ main {
 .highlight {
   background-color: yellow;
 }
+
+#loadingIndicator {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+}

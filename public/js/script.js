@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const scheduleContainer = document.getElementById('schedule');
   const searchInput = document.getElementById('searchInput');
   const speakerSearchInput = document.getElementById('speakerSearchInput');
+  const loadingIndicator = document.getElementById('loadingIndicator');
 
   let talks = [];
 
   // Fetch talk data from the API
   function fetchTalks() {
+    loadingIndicator.style.display = 'block';
+    scheduleContainer.innerHTML = '';
+
     const category = searchInput.value.toLowerCase();
     const speaker = speakerSearchInput.value.toLowerCase();
     
@@ -40,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render the schedule
   function renderSchedule(talksToRender) {
+    loadingIndicator.style.display = 'none';
     scheduleContainer.innerHTML = '';
     let startTime = new Date();
     startTime.setHours(10, 0, 0, 0);
