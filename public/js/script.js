@@ -15,30 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const category = searchInput.value.toLowerCase();
     const speaker = speakerSearchInput.value.toLowerCase();
     
-    let url = '/api/talks';
     const params = new URLSearchParams();
     if (category) {
-      // This will be filtered on the client side
+      params.append('category', category);
     }
     if (speaker) {
       params.append('speaker', speaker);
     }
     
-    if (speaker) {
-        url += `?${params.toString()}`;
-    }
-
-    fetch(url)
+    fetch(`/api/talks?${params.toString()}`)
       .then(response => response.json())
       .then(data => {
         talks = data;
-        let filteredTalks = talks;
-        if (category) {
-            filteredTalks = filteredTalks.filter(talk => {
-                return talk.category.some(cat => cat.toLowerCase().includes(category));
-            });
-        }
-        renderSchedule(filteredTalks);
+        renderSchedule(talks);
       });
   }
 

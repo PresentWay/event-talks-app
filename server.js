@@ -18,11 +18,17 @@ app.get('/api/talks', (req, res) => {
     }
     
     let talks = JSON.parse(data);
-    const { speaker } = req.query;
+    const { speaker, category } = req.query;
 
     if (speaker) {
       talks = talks.filter(talk =>
         talk.speakers.some(s => s.toLowerCase().includes(speaker.toLowerCase()))
+      );
+    }
+
+    if (category) {
+      talks = talks.filter(talk =>
+        talk.category.some(c => c.toLowerCase().includes(category.toLowerCase()))
       );
     }
 
