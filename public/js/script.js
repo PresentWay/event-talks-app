@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const speakerSearchInput = document.getElementById('speakerSearchInput');
   const loadingIndicator = document.getElementById('loadingIndicator');
+  const noResultsMessage = document.getElementById('noResultsMessage');
 
   let talks = [];
 
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function fetchTalks() {
     loadingIndicator.style.display = 'block';
     scheduleContainer.innerHTML = '';
+    noResultsMessage.style.display = 'none';
 
     const category = searchInput.value.toLowerCase();
     const speaker = speakerSearchInput.value.toLowerCase();
@@ -35,8 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderSchedule(talksToRender) {
     loadingIndicator.style.display = 'none';
     scheduleContainer.innerHTML = '';
-    let startTime = new Date();
-    startTime.setHours(10, 0, 0, 0);
+
+    if (talksToRender.length === 0) {
+      noResultsMessage.style.display = 'block';
+    } else {
+      noResultsMessage.style.display = 'none';
+    }
 
     const categorySearchTerm = searchInput.value.toLowerCase();
     const speakerSearchTerm = speakerSearchInput.value.toLowerCase();

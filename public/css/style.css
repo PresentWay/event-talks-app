@@ -102,3 +102,9 @@ main {
   font-size: 1.2rem;
   padding: 2rem;
 }
+
+#noResultsMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+}
