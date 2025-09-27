@@ -44,19 +44,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let startTime = new Date();
     startTime.setHours(10, 0, 0, 0);
 
+    const categorySearchTerm = searchInput.value.toLowerCase();
+    const speakerSearchTerm = speakerSearchInput.value.toLowerCase();
+
     talksToRender.forEach((talk, index) => {
       const talkElement = document.createElement('div');
       talkElement.classList.add('talk');
 
       const endTime = new Date(startTime.getTime() + talk.duration * 60000);
 
+      const speakers = talk.speakers.map(speaker => highlightText(speaker, speakerSearchTerm)).join(', ');
+      const categories = talk.category.map(cat => `<span>${highlightText(cat, categorySearchTerm)}</span>`).join('');
+
       talkElement.innerHTML = `
         <div class="time">${formatTime(startTime)} - ${formatTime(endTime)}</div>
         <h2>${talk.title}</h2>
-        <div class="speakers">By: ${talk.speakers.join(', ')}</div>
+        <div class="speakers">By: ${speakers}</div>
         <div class="description">${talk.description}</div>
         <div class="category">
-          ${talk.category.map(cat => `<span>${cat}</span>`).join('')}
+          ${categories}
         </div>
       `;
 
@@ -76,6 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime.setTime(endTime.getTime() + 10 * 60000); // 10-minute break
       }
     });
+  }
+
+  function highlightText(text, term) {
+    if (!term) return text;
+    const regex = new RegExp(`(${term})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
   }
 
   // Filter talks based on search input
