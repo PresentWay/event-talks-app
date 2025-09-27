@@ -30,7 +30,18 @@ main {
   margin-bottom: 2rem;
 }
 
-#searchInput {
+.search-field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.search-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+#searchInput, #speakerSearchInput {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
