@@ -16,7 +16,17 @@ app.get('/api/talks', (req, res) => {
       res.status(500).send('Error reading talks data');
       return;
     }
-    res.json(JSON.parse(data));
+    
+    let talks = JSON.parse(data);
+    const { speaker } = req.query;
+
+    if (speaker) {
+      talks = talks.filter(talk =>
+        talk.speakers.some(s => s.toLowerCase().includes(speaker.toLowerCase()))
+      );
+    }
+
+    res.json(talks);
   });
 });
 

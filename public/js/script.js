@@ -2,16 +2,41 @@
 document.addEventListener('DOMContentLoaded', () => {
   const scheduleContainer = document.getElementById('schedule');
   const searchInput = document.getElementById('searchInput');
+  const speakerSearchInput = document.getElementById('speakerSearchInput');
 
   let talks = [];
 
   // Fetch talk data from the API
-  fetch('/api/talks')
-    .then(response => response.json())
-    .then(data => {
-      talks = data;
-      renderSchedule(talks);
-    });
+  function fetchTalks() {
+    const category = searchInput.value.toLowerCase();
+    const speaker = speakerSearchInput.value.toLowerCase();
+    
+    let url = '/api/talks';
+    const params = new URLSearchParams();
+    if (category) {
+      // This will be filtered on the client side
+    }
+    if (speaker) {
+      params.append('speaker', speaker);
+    }
+    
+    if (speaker) {
+        url += `?${params.toString()}`;
+    }
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        talks = data;
+        let filteredTalks = talks;
+        if (category) {
+            filteredTalks = filteredTalks.filter(talk => {
+                return talk.category.some(cat => cat.toLowerCase().includes(category));
+            });
+        }
+        renderSchedule(filteredTalks);
+      });
+  }
 
   // Render the schedule
   function renderSchedule(talksToRender) {
@@ -54,16 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Filter talks based on search input
-  searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredTalks = talks.filter(talk => {
-      return talk.category.some(cat => cat.toLowerCase().includes(searchTerm));
-    });
-    renderSchedule(filteredTalks);
-  });
+  searchInput.addEventListener('input', fetchTalks);
+  speakerSearchInput.addEventListener('input', fetchTalks);
 
   // Helper function to format time
   function formatTime(date) {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
+
+  fetchTalks();
 });
