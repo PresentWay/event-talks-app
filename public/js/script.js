@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
       noResultsMessage.style.display = 'none';
     }
 
+    let startTime = new Date();
+    startTime.setHours(10, 0, 0, 0);
+
     const categorySearchTerm = searchInput.value.toLowerCase();
     const speakerSearchTerm = speakerSearchInput.value.toLowerCase();
 
